@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Кабинет оператора | Цифровое образование м.о. Егорьевск</title>
+  <style>
+    :root {
+      --bg-page: #f5f7fb;
+      --card-bg: #ffffff;
+      --primary: #0f2e5a;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --radius-card: 22px;
+      --radius-inner: 14px;
+      --radius-pill: 9999px;
+      --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Шапка */
+    header {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-box {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0f2e5a 0%, #1e4277 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(15, 46, 90, 0.2);
+    }
+
+    .brand-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .brand-subtitle {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-logout {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-logout:hover {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fca5a5;
+    }
+
+    main {
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 16px;
+      flex: 1;
+    }
+
+    /* Карточки */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 22px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Экран входа */
+    #authSection {
+      max-width: 420px;
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    .shield-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .shield-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .pw-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .pw-input {
+      width: 100%;
+      padding: 12px 44px 12px 14px;
+      font-size: 15px;
+      border-radius: var(--radius-inner);
+      border: 1.5px solid var(--border-color);
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .pw-input:focus {
+      border-color: var(--accent);
+      background: #ffffff;
+    }
+
+    .pw-toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+    }
+
+    /* Статистика обращений */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-badge-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      padding: 14px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-top: 2px;
+    }
+
+    /* Live-индикатор */
+    .sync-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-pill);
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2563eb;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
+      70% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    /* Фильтры и поиск */
+    .filters-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      padding: 6px 14px;
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Список обращений */
+    .appeal-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #ffffff;
+    }
+
+    .appeal-item:hover {
+      border-color: #93c5fd;
+      background: #f8fafc;
+    }
+
+    .appeal-item.selected {
+      border-color: var(--accent);
+      background: #eff6ff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+    }
+
+    .appeal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .fio-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .status-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+    }
+
+    .tag-wait { background: #fef3c7; color: #b45309; }
+    .tag-done { background: #dcfce7; color: #15803d; }
+
+    .meta-line {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .text-preview {
+      font-size: 13px;
+      color: #334155;
+      background: #f8fafc;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border-left: 3px solid #cbd5e1;
+      margin-top: 6px;
+    }
+
+    /* Поля формы ответа */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      outline: none;
+      background: #f8fafc;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .templates-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tpl-btn {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 12px;
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+
+    .tpl-btn:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    /* Зона прикрепления файлов */
+    .file-attach-box {
+      border: 1.5px dashed var(--border-color);
+      border-radius: var(--radius-inner);
+      padding: 14px;
+      background: #f8fafc;
+      text-align: center;
+      margin-bottom: 16px;
+      transition: border-color 0.18s ease;
+    }
+
+    .file-attach-box:hover {
+      border-color: var(--accent);
+    }
+
+    .file-chosen-chip {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 8px 14px;
+      border-radius: var(--radius-inner);
+      margin-top: 8px;
+      font-size: 13px;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .file-chosen-chip button {
+      background: none;
+      border: none;
+      color: #dc2626;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-submit-main {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-inner);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-submit-main:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .notification {
+      padding: 12px 14px;
+      border-radius: var(--radius-inner);
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification.success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; display: flex; }
+    .notification.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; display: flex; }
+
+    footer {
+      margin-top: auto;
+      padding: 22px 16px;
+      border-top: 1px solid var(--border-color);
+      background: #ffffff;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-box">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="brand-title">Кабинет оператора</div>
+          <div class="brand-subtitle">Комитет по образованию м.о. Егорьевск</div>
+        </div>
+      </div>
+      <div class="header-actions" id="headerActions" style="display:none;">
+        <button class="btn-logout" onclick="logout()">
+          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ЭКРАН 1: Авторизация по сложному мастер-паролю -->
+    <div id="authSection" class="card">
+      <div class="shield-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2 style="font-size:17px; font-weight:700; color:var(--primary); margin-bottom:6px;">Защищенный служебный вход</h2>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:18px;">Доступ к персональным данным заявителей (152-ФЗ РФ):</p>
+      
+      <div class="pw-wrap">
+        <input type="password" id="pwInput" class="pw-input" placeholder="Введите пароль администратора..." onkeydown="if(event.key==='Enter') login()">
+        <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility()">
+          <svg id="eyeIcon" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+
+      <button class="btn-submit-main" id="btnLogin" onclick="login()">
+        Войти в кабинет оператора
+      </button>
+      <div id="authErrorNotice" style="color:#dc2626; font-size:12px; font-weight:600; margin-top:12px; display:none;"></div>
+    </div>
+
+    <!-- ЭКРАН 2: Полнофункциональная панель управления -->
+    <div id="adminPanel" style="display:none;">
+      
+      <!-- Сводная аналитика -->
+      <div class="stats-grid">
+        <div class="stat-badge-card">
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-label">Всего обращений</div>
+        </div>
+        <div class="stat-badge-card" style="border-color:#fde68a;">
+          <div class="stat-value" style="color:#b45309;" id="statPending">0</div>
+          <div class="stat-label">Ожидают ответа</div>
+        </div>
+        <div class="stat-badge-card" style="border-color:#a7f3d0;">
+          <div class="stat-value" style="color:#059669;" id="statAnswered">0</div>
+          <div class="stat-label">Ответ направлен</div>
+        </div>
+      </div>
+
+      <!-- Live-индикатор синхронизации -->
+      <div class="sync-bar">
+        <div class="sync-status">
+          <span class="sync-dot"></span>
+          <span id="syncText">Синхронизация в реальном времени (каждые 6 сек)</span>
+        </div>
+        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; text-transform:none; margin:0;">
+          <input type="checkbox" id="autoSyncCheck" checked onchange="toggleAutoSync()" style="width:auto; margin:0;">
+          Автообновление
+        </label>
+      </div>
+
+      <div id="statusNotice" class="notification"></div>
+
+      <!-- Формирование ответа -->
+      <div class="card">
+        <div class="card-title">
+          <span>Формирование официального ответа заявителю</span>
+          <span id="selectedIndicator" style="font-size:12px; font-weight:600; color:var(--text-muted);">Обращение не выбрано</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Идентификаторы заявителя в МАКС</label>
+            <input type="text" id="targetDisplayId" placeholder="Выберите обращение из реестра..." required readonly style="background:#f1f5f9; font-weight:600;">
+            <input type="hidden" id="targetChatId">
+            <input type="hidden" id="targetUserId">
+          </div>
+          <div class="form-group">
+            <label>ФИО заявителя</label>
+            <input type="text" id="targetFio" placeholder="ФИО..." readonly style="background:#f1f5f9;">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Тематика вопроса</label>
+            <input type="text" id="targetCategory" placeholder="Тема..." readonly style="background:#f1f5f9;">
+          </div>
+          <div class="form-group">
+            <label>Организация (от чьего лица дается ответ)</label>
+            <div style="display:flex; gap:6px; margin-bottom:6px;">
+              <button type="button" class="tpl-btn" onclick="setReplyOrg('komitet')">🏛 От Комитета</button>
+              <button type="button" class="tpl-btn" id="btnOrgSchool" onclick="setReplyOrg('school')" style="display:none;">🏫 От Школы</button>
+            </div>
+            <input type="text" id="targetOrg" placeholder="Организация..." style="background:#ffffff;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Быстрые шаблоны ответов</label>
+          <div class="templates-bar">
+            <button type="button" class="tpl-btn" onclick="applyTemplate('work')">Принято в работу</button>
+            <button type="button" class="tpl-btn" onclick="applyTemplate('done')">Вопрос урегулирован</button>
+            <button type="button" class="tpl-btn" onclick="applyTemplate('visit')">Приглашение на личный прием</button>
+          </div>
+          <label>Текст официального ответа</label>
+          <textarea id="replyText" placeholder="Введите подробный официальный ответ заявителю..."></textarea>
+        </div>
+
+        <!-- Прикрепление файла -->
+        <div class="form-group">
+          <label>Прикрепить документ или фото (PDF, JPEG, PNG, DOCX, XLSX до 8 МБ)</label>
+          <div class="file-attach-box">
+            <input type="file" id="replyFileInput" onchange="handleFileSelected(event)" style="display:none;">
+            <button type="button" class="tpl-btn" onclick="document.getElementById('replyFileInput').click()" style="padding:8px 16px; font-size:12.5px; background:#eff6ff; color:#2563eb; border-color:#bfdbfe;">
+              📎 Выбрать файл или фотографию на компьютере
+            </button>
+            <div id="fileChip" class="file-chosen-chip">
+              <span id="fileNameLabel">документ.pdf</span>
+              <button type="button" onclick="removeAttachedFile()">✕ Удалить</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="btnSendReply" class="btn-submit-main" onclick="sendOfficialReply()">
+          <svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Направить официальный ответ в личные сообщения заявителю
+        </button>
+      </div>
+
+      <!-- Реестр обращений в реальном времени -->
+      <div class="card">
+        <div class="card-title">
+          <span>Реестр обращений граждан</span>
+          <button style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:12.5px; font-weight:700;" onclick="loadAppeals(true)">Обновить сейчас</button>
+        </div>
+
+        <!-- Фильтры и поиск -->
+        <div class="filters-bar">
+          <div class="filter-pills">
+            <button class="pill-btn active" id="fAll" onclick="setFilter('all')">Все</button>
+            <button class="pill-btn" id="fWait" onclick="setFilter('wait')">Ожидают ответа</button>
+            <button class="pill-btn" id="fDone" onclick="setFilter('done')">Ответ направлен</button>
+          </div>
+          <div style="flex:1; max-width:320px;">
+            <input type="text" id="tableSearch" placeholder="Поиск по ФИО, телефону, ID, тексту..." oninput="applyFilters()" style="padding:8px 12px; font-size:12.5px;">
+          </div>
+        </div>
+
+        <div id="appealsContainer">
+          <div style="text-align:center; padding:24px; color:var(--text-muted);">Загрузка обращений...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Комитет по образованию администрации муниципального округа Егорьевск &bull; Служебная панель оператора &bull; 152-ФЗ РФ
+  </footer>
+
+  <script>
+    const BACKEND_API_URL = 'https://script.google.com/macros/s/AKfycbw5zGkr605yPMHFp9nutKvDzynMWCOUE_AErJUJuFlXPZ9sjYlQ8NfxQpg5EfFvkni6/exec';
+    const DEFAULT_KOMITET_NAME = 'Комитет по образованию администрации муниципального округа Егорьевск';
+
+    let currentPassword = '';
+    let rawAppealsList = [];
+    let activeFilter = 'all';
+    let selectedRowIdx = null;
+    let selectedOrg = '';
+    let syncIntervalId = null;
+
+    let attachedFileBase64 = null;
+    let attachedFileName = null;
+    let attachedFileMime = null;
+
+    window.addEventListener('load', function() {
+      const savedPw = sessionStorage.getItem('ADMIN_SESSION_PW');
+      if (savedPw) {
+        currentPassword = savedPw;
+        doAuthCheck(savedPw, false);
+      }
+    });
+
+    function togglePasswordVisibility() {
+      const p = document.getElementById('pwInput');
+      p.type = p.type === 'password' ? 'text' : 'password';
+    }
+
+    function login() {
+      const pw = document.getElementById('pwInput').value.trim();
+      if (!pw) return;
+      currentPassword = pw;
+      doAuthCheck(pw, true);
+    }
+
+    function doAuthCheck(pw, showError) {
+      const errBox = document.getElementById('authErrorNotice');
+      const btn = document.getElementById('btnLogin');
+      if (btn) btn.disabled = true;
+
+      fetch(BACKEND_API_URL + '?action=get_admin_appeals&password=' + encodeURIComponent(pw))
+        .then(r => r.json())
+        .then(res => {
+          if (btn) btn.disabled = false;
+          if (res.status === 'success') {
+            sessionStorage.setItem('ADMIN_SESSION_PW', pw);
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('headerActions').style.display = 'flex';
+            rawAppealsList = res.data || [];
+            updateStats(rawAppealsList);
+            applyFilters();
+            startAutoSync();
+          } else {
+            sessionStorage.removeItem('ADMIN_SESSION_PW');
+            if (showError) {
+              errBox.style.display = 'block';
+              errBox.textContent = res.message || 'Ошибка авторизации';
+            }
+          }
+        })
+        .catch(() => {
+          if (btn) btn.disabled = false;
+          if (showError) {
+            errBox.style.display = 'block';
+            errBox.textContent = 'Ошибка подключения к серверу';
+          }
+        });
+    }
+
+    function logout() {
+      sessionStorage.removeItem('ADMIN_SESSION_PW');
+      clearInterval(syncIntervalId);
+      currentPassword = '';
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('headerActions').style.display = 'none';
+      document.getElementById('authSection').style.display = 'block';
+      document.getElementById('pwInput').value = '';
+    }
+
+    function startAutoSync() {
+      clearInterval(syncIntervalId);
+      syncIntervalId = setInterval(() => {
+        loadAppeals(false);
+      }, 6000);
+    }
+
+    function toggleAutoSync() {
+      const isChecked = document.getElementById('autoSyncCheck').checked;
+      if (isChecked) {
+        startAutoSync();
+        document.getElementById('syncText').textContent = 'Синхронизация в реальном времени (каждые 6 сек)';
+      } else {
+        clearInterval(syncIntervalId);
+        document.getElementById('syncText').textContent = 'Автообновление приостановлено';
+      }
+    }
+
+    function loadAppeals(showVisualIndicator) {
+      if (showVisualIndicator) {
+        document.getElementById('syncText').textContent = 'Обновление данных...';
+      }
+
+      fetch(BACKEND_API_URL + '?action=get_admin_appeals&password=' + encodeURIComponent(currentPassword))
+        .then(r => r.json())
+        .then(res => {
+          if (res.status === 'success') {
+            rawAppealsList = res.data || [];
+            updateStats(rawAppealsList);
+            applyFilters();
+            document.getElementById('syncText').textContent = 'Синхронизация в реальном времени (каждые 6 сек)';
+          }
+        })
+        .catch(() => {
+          document.getElementById('syncText').textContent = 'Ошибка связи с сервером';
+        });
+    }
+
+    function updateStats(list) {
+      const total = list.length;
+      const done = list.filter(item => item.status && item.status.indexOf('Ответ направлен') !== -1).length;
+      const wait = total - done;
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statPending').textContent = wait;
+      document.getElementById('statAnswered').textContent = done;
+    }
+
+    function setFilter(type) {
+      activeFilter = type;
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      if (type === 'all') document.getElementById('fAll').classList.add('active');
+      if (type === 'wait') document.getElementById('fWait').classList.add('active');
+      if (type === 'done') document.getElementById('fDone').classList.add('active');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const query = document.getElementById('tableSearch').value.toLowerCase().trim();
+      let filtered = rawAppealsList;
+
+      if (activeFilter === 'wait') {
+        filtered = filtered.filter(item => !item.status || item.status.indexOf('Ответ направлен') === -1);
+      } else if (activeFilter === 'done') {
+        filtered = filtered.filter(item => item.status && item.status.indexOf('Ответ направлен') !== -1);
+      }
+
+      if (query) {
+        filtered = filtered.filter(item => 
+          (item.fio && item.fio.toLowerCase().includes(query)) ||
+          (item.phone && item.phone.toLowerCase().includes(query)) ||
+          (item.org && item.org.toLowerCase().includes(query)) ||
+          (item.category && item.category.toLowerCase().includes(query)) ||
+          (item.text && item.text.toLowerCase().includes(query)) ||
+          (item.userId && String(item.userId).toLowerCase().includes(query)) ||
+          (item.chatId && String(item.chatId).toLowerCase().includes(query))
+        );
+      }
+
+      renderList(filtered);
+    }
+
+    function renderList(list) {
+      const c = document.getElementById('appealsContainer');
+      if (!list || !list.length) {
+        c.innerHTML = '<div style="text-align:center; padding:24px; color:var(--text-muted);">Обращений не найдено.</div>';
+        return;
+      }
+
+      c.innerHTML = list.map((item) => {
+        const isAnswered = item.status && item.status.indexOf('Ответ направлен') !== -1;
+        const tagClass = isAnswered ? 'tag-done' : 'tag-wait';
+        const isSelected = selectedRowIdx === item.rowIdx;
+        const docTitle = item.fileName ? item.fileName : 'Прикрепленный документ';
+
+        const userPart = item.userId ? item.userId : 'web_user';
+        const chatPart = item.chatId ? item.chatId : '';
+        const idDisplay = chatPart ? `${userPart} (${chatPart})` : userPart;
+
+        return `
+          <div class="appeal-item ${isSelected ? 'selected' : ''}" onclick="selectAppeal(${item.rowIdx})">
+            <div class="appeal-head">
+              <span class="fio-title">${item.fio} (${item.phone})</span>
+              <span class="status-tag ${tagClass}">${item.status}</span>
+            </div>
+            <div class="meta-line">
+              <strong>Адресат:</strong> ${item.org} &bull; <strong>Дата:</strong> ${item.date} &bull; <strong>ID:</strong> ${idDisplay}
+            </div>
+            <div class="meta-line"><strong>Категория:</strong> ${item.category}</div>
+            <div class="text-preview">${item.text}</div>
+            ${item.fileUrl ? `<div style="margin-top:6px; font-size:12px;"><a href="${item.fileUrl}" target="_blank" style="color:#2563eb; font-weight:600; text-decoration:none;">📎 ${docTitle}</a></div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectAppeal(rowIdx) {
+      const item = rawAppealsList.find(x => x.rowIdx === rowIdx);
+      if (!item) return;
+
+      selectedRowIdx = rowIdx;
+      selectedOrg = item.org || DEFAULT_KOMITET_NAME;
+
+      document.getElementById('targetChatId').value = item.chatId || '';
+      document.getElementById('targetUserId').value = item.userId || '';
+
+      const userDisplay = item.userId ? item.userId : 'web_user';
+      const chatDisplay = item.chatId ? item.chatId : 'чат не определен';
+      document.getElementById('targetDisplayId').value = `${userDisplay} | ${chatDisplay}`;
+
+      document.getElementById('targetFio').value = item.fio;
+      document.getElementById('targetCategory').value = item.category;
+      document.getElementById('targetOrg').value = selectedOrg;
+      document.getElementById('selectedIndicator').textContent = 'Выбрано обращение: №' + item.rowIdx;
+
+      const btnSchool = document.getElementById('btnOrgSchool');
+      if (selectedOrg && selectedOrg !== DEFAULT_KOMITET_NAME) {
+        btnSchool.style.display = 'inline-block';
+        btnSchool.textContent = '🏫 От школы (' + selectedOrg.substring(0, 16) + '...)';
+      } else {
+        btnSchool.style.display = 'none';
+      }
+
+      if (item.replyText) {
+        document.getElementById('replyText').value = item.replyText;
+      }
+
+      applyFilters();
+      document.getElementById('replyText').focus();
+    }
+
+    function setReplyOrg(type) {
+      const orgInput = document.getElementById('targetOrg');
+      if (type === 'komitet') {
+        orgInput.value = DEFAULT_KOMITET_NAME;
+      } else {
+        orgInput.value = selectedOrg || DEFAULT_KOMITET_NAME;
+      }
+    }
+
+    function applyTemplate(type) {
+      const area = document.getElementById('replyText');
+      if (type === 'work') {
+        area.value = 'Ваше обращение принято к рассмотрению. Специалистами запрошены необходимые сведения в образовательной организации. О результатах рассмотрения вам будет сообщено дополнительно.';
+      } else if (type === 'done') {
+        area.value = 'Сообщаем, что вопрос, изложенный в вашем обращении, успешно урегулирован. Администрацией образовательной организации приняты необходимые меры в соответствии с нормативными регламентами.';
+      } else if (type === 'visit') {
+        area.value = 'Для детального решения вопроса приглашаем вас на личный прием к руководителю образовательной организации в приемные часы (по предварительному согласованию времени по официальному телефону школы).';
+      }
+    }
+
+    function handleFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 8 * 1024 * 1024) {
+        alert('Размер файла превышает допустимый предел 8 МБ.');
+        removeAttachedFile();
+        return;
+      }
+
+      attachedFileName = file.name;
+      attachedFileMime = file.type || 'application/octet-stream';
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const raw = e.target.result;
+        attachedFileBase64 = raw.split(',')[1];
+        document.getElementById('fileNameLabel').textContent = '📎 ' + file.name + ' (' + Math.round(file.size / 1024) + ' КБ)';
+        document.getElementById('fileChip').style.display = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAttachedFile() {
+      attachedFileBase64 = null;
+      attachedFileName = null;
+      attachedFileMime = null;
+      document.getElementById('replyFileInput').value = '';
+      document.getElementById('fileChip').style.display = 'none';
+    }
+
+    function sendOfficialReply() {
+      const btn = document.getElementById('btnSendReply');
+      const notice = document.getElementById('statusNotice');
+      const chatIdVal = document.getElementById('targetChatId').value.trim();
+      const userIdVal = document.getElementById('targetUserId').value.trim();
+      const replyText = document.getElementById('replyText').value.trim();
+      const fio = document.getElementById('targetFio').value.trim();
+      const category = document.getElementById('targetCategory').value.trim();
+      const orgToReply = document.getElementById('targetOrg').value.trim() || selectedOrg || DEFAULT_KOMITET_NAME;
+
+      const curItem = rawAppealsList.find(x => x.rowIdx === selectedRowIdx) || {};
+
+      if (!replyText) {
+        alert('Пожалуйста, выберите обращение из списка и введите текст официального ответа.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = 'Загрузка вложения и отправка в МАКС...';
+
+      const payload = {
+        action: 'admin_send_reply',
+        password: currentPassword,
+        chatId: chatIdVal || curItem.chatId || '',
+        userId: userIdVal || curItem.userId || '',
+        phone: curItem.phone || '',
+        replyText: replyText,
+        fio: fio,
+        category: category,
+        org: orgToReply,
+        rowIdx: selectedRowIdx,
+        fileName: attachedFileName,
+        fileBase64: attachedFileBase64,
+        fileMimeType: attachedFileMime
+      };
+
+      fetch(BACKEND_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(r => r.json())
+      .then(res => {
+        btn.disabled = false;
+        btn.innerHTML = '<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Направить официальный ответ в личные сообщения заявителю';
+
+        if (res.status === 'success') {
+          const sentId = res.deliveredId || ('чат ' + res.deliveredChatId);
+          notice.className = 'notification success';
+          notice.textContent = 'Официальный ответ и вложение (' + (res.fileName || attachedFileName || 'файл') + ') успешно доставлены гражданину в МАКС (' + sentId + ') от лица: ' + orgToReply;
+          document.getElementById('replyText').value = '';
+          removeAttachedFile();
+          loadAppeals(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          notice.className = 'notification error';
+          notice.textContent = 'Ошибка отправки: ' + (res.message || 'Сервер отклонил запрос');
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Направить официальный ответ в личные сообщения заявителю';
+        notice.className = 'notification error';
+        notice.textContent = 'Ошибка сети или сбоя связи с сервером.';
+      });
+    }
+  </script>
+</body>
+</html>
