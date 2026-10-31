@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Цифровое образование | Муниципальный округ Егорьевск</title>
+  <style>
+    :root {
+      --bg-page: #f5f7fb;
+      --card-bg: #ffffff;
+      --primary: #0f2e5a;
+      --primary-hover: #1e4277;
+      --accent: #2563eb;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --border-focus: #3b82f6;
+      --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      --radius-card: 22px;
+      --radius-inner: 14px;
+      --radius-pill: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-container {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0f2e5a 0%, #1e4277 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(15, 46, 90, 0.2);
+    }
+
+    .brand-icon-box svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.2px;
+    }
+
+    .brand-subtitle {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #059669;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 1px solid #d1fae5;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .tabs-wrapper {
+      max-width: 640px;
+      margin: 16px auto 0;
+      padding: 0 16px;
+      width: 100%;
+    }
+
+    .nav-tabs {
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 8px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-pill);
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    main {
+      flex: 1;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .view-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .view-section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .threema-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 22px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-header-flex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-icon-squircle {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon-squircle svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-blue { background: #eff6ff; stroke: #2563eb; }
+    .icon-purple { background: #faf5ff; stroke: #9333ea; }
+    .icon-amber { background: #fffbeb; stroke: #d97706; }
+
+    .card-title-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .user-profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    .user-profile-badge.linked {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+    }
+
+    .dest-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .dest-option {
+      background: #f8fafc;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .dest-option svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    .dest-option.active {
+      background: #eff6ff;
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      background-color: #f8fafc;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.18s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border: none;
+      border-radius: var(--radius-inner);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-submit:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-box input {
+      padding-left: 38px;
+      background: #f8fafc;
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 17px;
+      height: 17px;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: border-color 0.18s ease;
+    }
+
+    .faq-header {
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .faq-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .faq-tag {
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .faq-question-text {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .faq-chevron {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 2;
+      transition: transform 0.22s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-chevron.rotate {
+      transform: rotate(180deg);
+      stroke: var(--accent);
+    }
+
+    .faq-body {
+      display: none;
+      padding: 12px 14px 14px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.55;
+      white-space: pre-line;
+    }
+
+    .faq-body.show {
+      display: block;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .school-item-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-inner);
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+
+    .school-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .school-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .school-inn-pill {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+    }
+
+    .school-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: #334155;
+      margin-top: 4px;
+    }
+
+    .school-row svg {
+      width: 14px;
+      height: 14px;
+      stroke: #94a3b8;
+      stroke-width: 2;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    .btn-choose-school {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--accent);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-choose-school:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .notification {
+      padding: 12px 14px;
+      border-radius: var(--radius-inner);
+      font-size: 13px;
+      margin-bottom: 14px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification.success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: flex;
+    }
+
+    .notification.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      display: flex;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 26px 16px 34px;
+      border-top: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .footer-container {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-org {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 12.5px;
+    }
+
+    .footer-dev {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 11.5px;
+    }
+
+    .footer-dev svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .footer-rights {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-icon-box">
+          <svg viewBox="0 0 24 24">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Цифровое образование</div>
+          <div class="brand-subtitle">Комитет по образованию м.о. Егорьевск</div>
+        </div>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span> Онлайн
+      </div>
+    </div>
+  </header>
+
+  <div class="tabs-wrapper">
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('appeal')">
+        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Подать обращение
+      </button>
+      <button class="tab-btn" onclick="switchTab('faq')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Вопросы (FAQ)
+      </button>
+      <button class="tab-btn" onclick="switchTab('schools')">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        14 школ округа
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <section id="section-appeal" class="view-section active">
+      <div id="notice-box" class="notification"></div>
+      
+      <div class="threema-card">
+        <div class="card-header-flex">
+          <div class="card-icon-squircle icon-blue">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="card-title-text">Электронная приёмная граждан</div>
+          <div id="userBadge" class="user-profile-badge">МАКС: связь...</div>
+        </div>
+
+        <label>Куда направляется обращение</label>
+        <div class="dest-selector">
+          <div id="optKomitet" class="dest-option active" onclick="setDestination('komitet')">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 3l9 7H3z"/></svg>
+            В Комитет
+          </div>
+          <div id="optSchool" class="dest-option" onclick="setDestination('school')">
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            В школу округа
+          </div>
+        </div>
+
+        <form id="appealForm" onsubmit="submitForm(event)">
+          <div class="form-group" id="schoolSelectGroup" style="display: none;">
+            <label for="schoolSelect">Выберите образовательное учреждение</label>
+            <select id="schoolSelect">
+              <option value="МОУ СОШ № 13" selected>МОУ СОШ № 13</option>
+              <option value="МБОУ СОШ № 1">МБОУ СОШ № 1</option>
+              <option value="МБОУ СОШ № 2">МБОУ СОШ № 2</option>
+              <option value="МБОУ СОШ № 3 с УИОП">МБОУ СОШ № 3 с УИОП</option>
+              <option value="МБОУ СОШ № 4">МБОУ СОШ № 4</option>
+              <option value="МБОУ СОШ № 5">МБОУ СОШ № 5</option>
+              <option value="МБОУ СОШ № 8">МБОУ СОШ № 8</option>
+              <option value="МКОУ «Школа № 9 для обучающихся с ОВЗ»">МКОУ «Школа № 9 для обучающихся с ОВЗ»</option>
+              <option value="МБОУ Гимназия № 10">МБОУ Гимназия № 10</option>
+              <option value="МБОУ СОШ № 12 с УИОП">МБОУ СОШ № 12 с УИОП</option>
+              <option value="МАОУ «Центр образования»">МАОУ «Центр образования»</option>
+              <option value="МБОУ СОШ № 15">МБОУ СОШ № 15</option>
+              <option value="МАОУ «Георгиевская гимназия»">МАОУ «Георгиевская гимназия»</option>
+              <option value="МКОУ «Клеменовская школа-интернат с ОВЗ»">МКОУ «Клеменовская школа-интернат с ОВЗ»</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="fioInput">ФИО заявителя</label>
+            <input type="text" id="fioInput" placeholder="Иванов Иван Иванович" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phoneInput">Контактный телефон</label>
+            <input type="tel" id="phoneInput" placeholder="+7 (___) ___-__-__" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categorySelect">Категория вопроса</label>
+            <select id="categorySelect" required>
+              <option value="Приём и перевод">Приём в школу и перевод обучающихся</option>
+              <option value="Питание">Горячее и льготное школьное питание</option>
+              <option value="ГИА (ОГЭ / ЕГЭ)">Государственная итоговая аттестация (ОГЭ, ЕГЭ)</option>
+              <option value="Электронный дневник">Электронный дневник («Моя школа»)</option>
+              <option value="Психологическая помощь">Консультация педагога-психолога</option>
+              <option value="Общие вопросы">Общие и административные вопросы</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="textInput">Суть обращения</label>
+            <textarea id="textInput" placeholder="Подробно опишите обстоятельства и ваш вопрос..." required></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit">
+            <svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Зарегистрировать обращение
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="section-faq" class="view-section">
+      <div class="threema-card">
+        <div class="card-header-flex">
+          <div class="card-icon-squircle icon-purple">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="card-title-text">Справочник типовых ответов</div>
+        </div>
+
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="faqSearch" placeholder="Поиск по ключевому слову или теме..." oninput="filterFaq()">
+        </div>
+
+        <div id="faqListContainer"></div>
+      </div>
+    </section>
+
+    <section id="section-schools" class="view-section">
+      <div class="threema-card">
+        <div class="card-header-flex">
+          <div class="card-icon-squircle icon-amber">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="card-title-text">Учреждения муниципального округа Егорьевск</div>
+        </div>
+
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="schoolSearch" placeholder="Поиск по номеру (напр. 13), директору, ИНН..." oninput="filterSchools()">
+        </div>
+
+        <div id="schoolsListContainer"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-org">Комитет по образованию администрации муниципального округа Егорьевск</div>
+      <div class="footer-dev">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Разработка и техническое сопровождение: МОУ СОШ № 13, учитель информатики Пушкин Артём Александрович
+      </div>
+      <div class="footer-rights">© 2026 Единая муниципальная система цифрового образования. Все права защищены.</div>
+    </div>
+  </footer>
+
+  <script>
+    const BACKEND_API_URL = 'https://script.google.com/macros/s/AKfycbw5zGkr605yPMHFp9nutKvDzynMWCOUE_AErJUJuFlXPZ9sjYlQ8NfxQpg5EfFvkni6/exec';
+    let currentDest = 'komitet';
+    let currentUserId = 'web_user';
+
+    function updateUserBadge(id) {
+      const b = document.getElementById('userBadge');
+      if (!b) return;
+      if (id && id !== 'web_user') {
+        b.className = 'user-profile-badge linked';
+        b.textContent = 'МАКС: id_' + id;
+      } else {
+        b.className = 'user-profile-badge';
+        b.textContent = 'МАКС: веб-сессия';
+      }
+    }
+
+    // Комплексный сбор ID пользователя из МАКС Bridge, Hash и Search
+    function detectMaxUserId() {
+      let foundId = null;
+      let foundName = null;
+
+      // 1. Проверка нативного моста МАКС (window.WebApp / window.Max / Telegram WebApp)
+      const webAppObj = window.WebApp || (window.Max && window.Max.WebApp) || (window.Telegram && window.Telegram.WebApp) || window.Max;
+      if (webAppObj) {
+        try {
+          if (typeof webAppObj.ready === 'function') webAppObj.ready();
+          if (typeof webAppObj.expand === 'function') webAppObj.expand();
+        } catch (e) {}
+
+        if (webAppObj.initDataUnsafe) {
+          const u = webAppObj.initDataUnsafe.user;
+          if (u && (u.id || u.user_id)) {
+            foundId = String(u.id || u.user_id);
+            foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
+          }
+          if (!foundId && webAppObj.initDataUnsafe.chat && webAppObj.initDataUnsafe.chat.id) {
+            foundId = String(webAppObj.initDataUnsafe.chat.id);
+          }
+        }
+
+        if (!foundId && webAppObj.initData) {
+          try {
+            const rawParams = new URLSearchParams(webAppObj.initData);
+            if (rawParams.get('user')) {
+              const u = JSON.parse(decodeURIComponent(rawParams.get('user')));
+              if (u && (u.id || u.user_id)) {
+                foundId = String(u.id || u.user_id);
+                foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
+              }
+            }
+            if (!foundId && rawParams.get('user_id')) foundId = rawParams.get('user_id');
+            if (!foundId && rawParams.get('chat_id')) foundId = rawParams.get('chat_id');
+          } catch (e) {}
+        }
+      }
+
+      // 2. Проверка фрагмента URL Hash (#maxWebAppData=... или прямые параметры)
+      if (!foundId && window.location.hash) {
+        try {
+          const hashStr = window.location.hash.replace(/^#/, '');
+          const hashParams = new URLSearchParams(hashStr);
+
+          const nestedData = hashParams.get('maxWebAppData') || hashParams.get('tgWebAppData') || hashParams.get('initData');
+          if (nestedData) {
+            const nestedParams = new URLSearchParams(nestedData);
+            if (nestedParams.get('user')) {
+              const u = JSON.parse(decodeURIComponent(nestedParams.get('user')));
+              if (u && (u.id || u.user_id)) {
+                foundId = String(u.id || u.user_id);
+                foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
+              }
+            }
+            if (!foundId && nestedParams.get('user_id')) foundId = nestedParams.get('user_id');
+            if (!foundId && nestedParams.get('id')) foundId = nestedParams.get('id');
+          }
+
+          if (!foundId) {
+            foundId = hashParams.get('uid') || hashParams.get('userId') || hashParams.get('user_id') || hashParams.get('id') || hashParams.get('start_param');
+          }
+          if (!foundName) {
+            foundName = hashParams.get('fio') || hashParams.get('name');
+          }
+        } catch (e) {}
+      }
+
+      // 3. Проверка параметров URL Search (?uid=... или ?user_id=...)
+      if (!foundId && window.location.search) {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          foundId = urlParams.get('uid') || urlParams.get('userId') || urlParams.get('user_id') || urlParams.get('id') || urlParams.get('chat_id') || urlParams.get('start_param');
+          if (!foundName) {
+            foundName = urlParams.get('fio') || urlParams.get('name');
+          }
+        } catch (e) {}
+      }
+
+      // 4. Проверка сохраненного ID в хранилище браузера устройства
+      if (!foundId || foundId === 'web_user') {
+        const saved = localStorage.getItem('USER_MAX_ID');
+        if (saved && saved !== 'web_user' && /^\d+$/.test(saved)) {
+          foundId = saved;
+        }
+      }
+
+      // Применение и сохранение ID профиля
+      if (foundId && /^\d+$/.test(foundId)) {
+        currentUserId = foundId;
+        localStorage.setItem('USER_MAX_ID', foundId);
+        updateUserBadge(foundId);
+      } else {
+        updateUserBadge(currentUserId);
+      }
+
+      if (foundName && foundName.trim()) {
+        const fioInput = document.getElementById('fioInput');
+        if (fioInput && !fioInput.value.trim()) {
+          fioInput.value = decodeURIComponent(foundName.trim());
+        }
+      }
+
+      return foundId;
+    }
+
+    window.addEventListener('load', function() {
+      detectMaxUserId();
+
+      // Циклическая проверка для перехвата моста, если он внедряется с задержкой в WebView
+      let attempts = 0;
+      const checker = setInterval(function() {
+        attempts++;
+        const id = detectMaxUserId();
+        if ((id && id !== 'web_user') || attempts > 25) {
+          clearInterval(checker);
+        }
+      }, 120);
+
+      renderFaqs(faqs);
+      renderSchools(schools);
+    });
+
+    const faqs = [
+      {
+        category: "Приём и перевод",
+        question: "Порядок записи ребенка в 1 класс и нормативная база",
+        answer: "Запись детей в 1 класс проводится в соответствии с Приказом Минпросвещения России от 02.09.2020 № 458 и ст. 67 Федерального закона № 273-ФЗ «Об образовании в РФ».\n\nКампания организована в 2 этапа через Региональный портал госуслуг (uslugi.mosreg.ru):\n• 1 этап (с 1 апреля по 30 июня) — для детей с регистрацией на закрепленной территории и льготных категорий;\n• 2 этап (с 6 июля по 5 сентября) — на свободные места в любую школу округа."
+      },
+      {
+        category: "Питание",
+        question: "Организация бесплатного и льготного горячего питания",
+        answer: "1. 1–4 классы: 100% учащихся получают бесплатное горячее питание автоматически за счет бюджета (заявление не требуется).\n\n2. 5–11 классы: льготное питание оформляется законными представителями через портал Госуслуг Московской области (услуга «Предоставление бесплатного питания в школах Московской области») либо через социального педагога школы (Закон МО № 1/2006-ОЗ)."
+      },
+      {
+        category: "ГИА (ОГЭ / ЕГЭ)",
+        question: "Сроки подачи заявлений на экзамены ГИА",
+        answer: "Сроки подачи заявлений:\n• ЕГЭ (11 класс) — до 1 февраля включительно;\n• ОГЭ (9 класс) — до 1 марта включительно.\n\nВыпускники текущего года подают заявления в своей школе. Информационный портал РЦОИ МО: rcoi.net."
+      },
+      {
+        category: "Электронный дневник",
+        question: "Вход во ФГИС «Моя школа»",
+        answer: "Авторизация в системе «Моя школа» выполняется с использованием подтвержденной учетной записи Госуслуг (ЕСИА):\nhttps://myschool.mosreg.ru\n\nЕсли дневник не открывается, обратитесь к классному руководителю для сверки СНИЛС ребенка в базе школы."
+      },
+      {
+        category: "Психологическая помощь",
+        question: "Запись на прием к педагогу-психологу",
+        answer: "Индивидуальные консультации проводятся бесплатно. Записаться можно через классного руководителя, администрацию школы или подав обращение через текущую форму."
+      }
+    ];
+
+    const schools = [
+      { name: "МБОУ СОШ № 1", director: "Аксёнов Георгий Иванович", phone: "+7 (49640) 3-34-31", email: "egor_school1@mosreg.ru", inn: "5011019080", address: "3-й микрорайон, д. 3А / с. Починки, ул. Молодёжная, д. 12" },
+      { name: "МБОУ СОШ № 2", director: "Карепина Ольга Сергеевна", phone: "+7 (49640) 4-58-56", email: "egor_school2@mosreg.ru", inn: "5011019097", address: "ул. Профсоюзная, д. 24 / п. Шувое, ул. Советская, д. 25" },
+      { name: "МБОУ СОШ № 3 с УИОП", director: "Становова Ирина Алексеевна", phone: "+7 (49640) 3-34-28", email: "egor_school3@mosreg.ru", inn: "5011019107", address: "ул. Антипова, д. 45 / с. Саввино / д. Иваново" },
+      { name: "МБОУ СОШ № 4", director: "Чеботарёва Наталья Евгеньевна", phone: "+7 (49640) 3-05-52", email: "egor_school4@mosreg.ru", inn: "5011019114", address: "1-й микрорайон, д. 69" },
+      { name: "МБОУ СОШ № 5", director: "Лопатина Инна Николаевна", phone: "+7 (49640) 3-64-24", email: "egor_school5@mosreg.ru", inn: "5011019121", address: "ул. 9 Января, д. 69 / д. Селиваниха, ул. Юбилейная, д. 17А" },
+      { name: "МБОУ СОШ № 8", director: "Гладышева Наталья Михайловна", phone: "+7 (49640) 3-93-95", email: "egor_school8@mosreg.ru", inn: "5011019146", address: "ул. Антипова, д. 22 / д. Юрцово, д. 212" },
+      { name: "МКОУ «Школа № 9 для обучающихся с ОВЗ»", director: "Логинова Светлана Анатольевна", phone: "+7 (49640) 3-95-50", email: "egor_school9ovz@mosreg.ru", inn: "5011019153", address: "Касимовское шоссе, д. 4А / ул. Владимирская, д. 1А" },
+      { name: "МБОУ Гимназия № 10", director: "Брызгалова Марина Анатольевна", phone: "+7 (49640) 2-45-43", email: "egor_gimn10@mosreg.ru", inn: "5011019178", address: "ул. Парижской Коммуны, д. 14/91 / с. Раменки, ул. Школьная, д. 7" },
+      { name: "МБОУ СОШ № 12 с УИОП", director: "Руководство образовательной организации", phone: "+7 (49640) 3-63-28", email: "egor_school12@mosreg.ru", inn: "5011019185", address: "1-й микрорайон, д. 61 / р.п. Рязановский, ул. Ленина, д. 1" },
+      { name: "МОУ СОШ № 13", director: "Турукина Наталья Николаевна", phone: "+7 (49640) 4-50-21", email: "egrv_mou_13@mosreg.ru", inn: "5011019192", address: "ул. Владимирская, д. 15А / п. Новый, д. 17" },
+      { name: "МАОУ «Центр образования»", director: "Глазова Мария Дмитриевна", phone: "+7 (49640) 3-24-67", email: "egrv_centrobr@mosreg.ru", inn: "5011018552", address: "ул. Горшкова, д. 32 / д. Михали, ул. Гагарина, д. 16А" },
+      { name: "МБОУ СОШ № 15", director: "Потеенко Людмила Анатольевна", phone: "+7 (49640) 3-26-50", email: "egor_school15@mosreg.ru", inn: "5011019202", address: "6-й микрорайон, д. 14А / д. Поповская, д. 50А" },
+      { name: "МАОУ «Георгиевская гимназия»", director: "Жиденькова Вера Юрьевна", phone: "+7 (49640) 4-20-80", email: "egor_georgimn@mosreg.ru", inn: "5011020085", address: "ул. Октябрьская, д. 17 / ул. Парижской Коммуны, д. 1Б" },
+      { name: "МКОУ «Клеменовская школа-интернат с ОВЗ»", director: "Голубева Елена Викторовна", phone: "+7 (49640) 6-22-31", email: "egor_klemenshkola@mosreg.ru", inn: "5011019227", address: "д. Клеменово, д. 88" }
+    ];
+
+    function setDestination(type) {
+      currentDest = type;
+      const optK = document.getElementById('optKomitet');
+      const optS = document.getElementById('optSchool');
+      const grp = document.getElementById('schoolSelectGroup');
+
+      if (type === 'komitet') {
+        optK.classList.add('active');
+        optS.classList.remove('active');
+        grp.style.display = 'none';
+      } else {
+        optS.classList.add('active');
+        optK.classList.remove('active');
+        grp.style.display = 'block';
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.view-section').forEach(function(s) { s.classList.remove('active'); });
+      if (tab === 'appeal') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('section-appeal').classList.add('active');
+      } else if (tab === 'faq') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('section-faq').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('section-schools').classList.add('active');
+      }
+    }
+
+    function appealToSchool(schoolName) {
+      switchTab('appeal');
+      setDestination('school');
+      const sel = document.getElementById('schoolSelect');
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === schoolName) {
+          sel.selectedIndex = i;
+          break;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderFaqs(list) {
+      const c = document.getElementById('faqListContainer');
+      if (!list.length) {
+        c.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:16px 0;">Вопросов не найдено.</div>';
+        return;
+      }
+      let html = '';
+      for (let i = 0; i < list.length; i++) {
+        html += '<div class="faq-item">' +
+          '<div class="faq-header" onclick="toggleFaq(' + i + ')">' +
+            '<div class="faq-title-wrap">' +
+              '<span class="faq-tag">' + list[i].category + '</span>' +
+              '<span class="faq-question-text">' + list[i].question + '</span>' +
+            '</div>' +
+            '<svg class="faq-chevron" id="faq-chev-' + i + '" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>' +
+          '</div>' +
+          '<div class="faq-body" id="faq-ans-' + i + '">' + list[i].answer + '</div>' +
+        '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    function toggleFaq(idx) {
+      const ans = document.getElementById('faq-ans-' + idx);
+      const chev = document.getElementById('faq-chev-' + idx);
+      const isShow = ans.classList.toggle('show');
+      chev.classList.toggle('rotate', isShow);
+    }
+
+    function filterFaq() {
+      const q = document.getElementById('faqSearch').value.toLowerCase().trim();
+      const filtered = [];
+      for (let i = 0; i < faqs.length; i++) {
+        if (faqs[i].question.toLowerCase().indexOf(q) !== -1 || 
+            faqs[i].answer.toLowerCase().indexOf(q) !== -1 || 
+            faqs[i].category.toLowerCase().indexOf(q) !== -1) {
+          filtered.push(faqs[i]);
+        }
+      }
+      renderFaqs(filtered);
+    }
+
+    function renderSchools(list) {
+      const c = document.getElementById('schoolsListContainer');
+      if (!list.length) {
+        c.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:16px 0;">Организаций не найдено.</div>';
+        return;
+      }
+      let html = '';
+      for (let i = 0; i < list.length; i++) {
+        const s = list[i];
+        html += '<div class="school-item-card">' +
+          '<div class="school-head">' +
+            '<div class="school-title">' + s.name + '</div>' +
+            '<div class="school-inn-pill">ИНН ' + s.inn + '</div>' +
+          '</div>' +
+          '<div class="school-row">' +
+            '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+            '<span><strong>Директор:</strong> ' + s.director + '</span>' +
+          '</div>' +
+          '<div class="school-row">' +
+            '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+            '<span><strong>Телефон:</strong> ' + s.phone + '</span>' +
+          '</div>' +
+          '<div class="school-row">' +
+            '<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>' +
+            '<span>' + s.email + '</span>' +
+          '</div>' +
+          '<div class="school-row">' +
+            '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+            '<span>' + s.address + '</span>' +
+          '</div>' +
+          '<button type="button" class="btn-choose-school" onclick="appealToSchool(\'' + s.name + '\')">' +
+            '<svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+            'Написать обращение в эту школу' +
+          '</button>' +
+        '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    function filterSchools() {
+      const q = document.getElementById('schoolSearch').value.toLowerCase().trim();
+      const filtered = [];
+      for (let i = 0; i < schools.length; i++) {
+        const s = schools[i];
+        if (s.name.toLowerCase().indexOf(q) !== -1 || 
+            s.director.toLowerCase().indexOf(q) !== -1 || 
+            s.inn.indexOf(q) !== -1 || 
+            s.address.toLowerCase().indexOf(q) !== -1) {
+          filtered.push(s);
+        }
+      }
+      renderSchools(filtered);
+    }
+
+    function submitForm(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const noticeBox = document.getElementById('notice-box');
+      
+      let targetOrg = 'Комитет по образованию администрации муниципального округа Егорьевск';
+      if (currentDest === 'school') {
+        targetOrg = document.getElementById('schoolSelect').value;
+      }
+
+      // Финальная сверка перед отправкой
+      detectMaxUserId();
+
+      const payload = {
+        action: 'submit_mini_app_appeal',
+        userId: currentUserId,
+        fio: document.getElementById('fioInput').value.trim(),
+        phone: document.getElementById('phoneInput').value.trim(),
+        organization: targetOrg,
+        category: document.getElementById('categorySelect').value,
+        text: document.getElementById('textInput').value.trim()
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Отправка обращения...';
+
+      fetch(BACKEND_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Зарегистрировать обращение';
+        noticeBox.className = 'notification success';
+        noticeBox.textContent = 'Обращение успешно зарегистрировано в едином реестре. Адресат: ' + targetOrg;
+        document.getElementById('textInput').value = '';
+        if (res.userId && res.userId !== 'web_user') {
+          currentUserId = res.userId.replace(/^id_/, '');
+          localStorage.setItem('USER_MAX_ID', currentUserId);
+          updateUserBadge(currentUserId);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function(err) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Зарегистрировать обращение';
+        noticeBox.className = 'notification error';
+        noticeBox.textContent = 'Ошибка отправки обращения. Попробуйте позже.';
+      });
+    }
+  </script>
+</body>
+</html>
