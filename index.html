@@ -660,7 +660,7 @@
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
           <div class="card-title-text">Электронная приёмная граждан</div>
-          <div id="userBadge" class="user-profile-badge">МАКС: связь...</div>
+          <div id="userBadge" class="user-profile-badge">Определение профиля...</div>
         </div>
 
         <label>Куда направляется обращение</label>
@@ -787,6 +787,12 @@
     let currentDest = 'komitet';
     let currentUserId = 'web_user';
 
+    // 1. Принудительное удаление устаревших данных из постоянной памяти браузера
+    try {
+      localStorage.removeItem('USER_MAX_ID');
+      localStorage.removeItem('MAX_USER_ID');
+    } catch(e) {}
+
     function updateUserBadge(id) {
       const b = document.getElementById('userBadge');
       if (!b) return;
@@ -795,104 +801,86 @@
         b.textContent = 'МАКС: id_' + id;
       } else {
         b.className = 'user-profile-badge';
-        b.textContent = 'МАКС: веб-сессия';
+        b.textContent = 'Веб-приёмная';
       }
     }
 
-    // Комплексный сбор ID пользователя из МАКС Bridge, Hash и Search
-    function detectMaxUserId() {
+    // 2. Строгий поиск ID текущего пользователя без использования чужих сессий
+    function detectRealMaxUser() {
       let foundId = null;
       let foundName = null;
 
-      // 1. Проверка нативного моста МАКС (window.WebApp / window.Max / Telegram WebApp)
-      const webAppObj = window.WebApp || (window.Max && window.Max.WebApp) || (window.Telegram && window.Telegram.WebApp) || window.Max;
-      if (webAppObj) {
-        try {
-          if (typeof webAppObj.ready === 'function') webAppObj.ready();
-          if (typeof webAppObj.expand === 'function') webAppObj.expand();
-        } catch (e) {}
-
-        if (webAppObj.initDataUnsafe) {
-          const u = webAppObj.initDataUnsafe.user;
-          if (u && (u.id || u.user_id)) {
-            foundId = String(u.id || u.user_id);
-            foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
-          }
-          if (!foundId && webAppObj.initDataUnsafe.chat && webAppObj.initDataUnsafe.chat.id) {
-            foundId = String(webAppObj.initDataUnsafe.chat.id);
-          }
+      // Источник А: URL Search (?uid=... из кнопки в чате бота)
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const u = urlParams.get('uid') || urlParams.get('userId') || urlParams.get('user_id') || urlParams.get('id');
+        if (u && /^\d+$/.test(u)) {
+          foundId = String(u);
         }
+        foundName = urlParams.get('fio') || urlParams.get('name');
+      } catch(e) {}
 
-        if (!foundId && webAppObj.initData) {
-          try {
-            const rawParams = new URLSearchParams(webAppObj.initData);
-            if (rawParams.get('user')) {
-              const u = JSON.parse(decodeURIComponent(rawParams.get('user')));
-              if (u && (u.id || u.user_id)) {
-                foundId = String(u.id || u.user_id);
-                foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
-              }
-            }
-            if (!foundId && rawParams.get('user_id')) foundId = rawParams.get('user_id');
-            if (!foundId && rawParams.get('chat_id')) foundId = rawParams.get('chat_id');
-          } catch (e) {}
-        }
-      }
-
-      // 2. Проверка фрагмента URL Hash (#maxWebAppData=... или прямые параметры)
+      // Источник Б: URL Hash (#maxWebAppData=... или #tgWebAppData=...)
       if (!foundId && window.location.hash) {
         try {
-          const hashStr = window.location.hash.replace(/^#/, '');
-          const hashParams = new URLSearchParams(hashStr);
-
-          const nestedData = hashParams.get('maxWebAppData') || hashParams.get('tgWebAppData') || hashParams.get('initData');
-          if (nestedData) {
-            const nestedParams = new URLSearchParams(nestedData);
+          const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+          const nested = hashParams.get('maxWebAppData') || hashParams.get('tgWebAppData') || hashParams.get('initData');
+          if (nested) {
+            const nestedParams = new URLSearchParams(nested);
             if (nestedParams.get('user')) {
-              const u = JSON.parse(decodeURIComponent(nestedParams.get('user')));
-              if (u && (u.id || u.user_id)) {
-                foundId = String(u.id || u.user_id);
-                foundName = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
+              const uObj = JSON.parse(decodeURIComponent(nestedParams.get('user')));
+              if (uObj && (uObj.id || uObj.user_id)) {
+                foundId = String(uObj.id || uObj.user_id);
+                foundName = ((uObj.first_name || '') + ' ' + (uObj.last_name || '')).trim();
               }
             }
             if (!foundId && nestedParams.get('user_id')) foundId = nestedParams.get('user_id');
-            if (!foundId && nestedParams.get('id')) foundId = nestedParams.get('id');
           }
-
           if (!foundId) {
-            foundId = hashParams.get('uid') || hashParams.get('userId') || hashParams.get('user_id') || hashParams.get('id') || hashParams.get('start_param');
+            const direct = hashParams.get('uid') || hashParams.get('userId') || hashParams.get('user_id') || hashParams.get('id');
+            if (direct && /^\d+$/.test(direct)) foundId = String(direct);
           }
-          if (!foundName) {
-            foundName = hashParams.get('fio') || hashParams.get('name');
-          }
-        } catch (e) {}
+        } catch(e) {}
       }
 
-      // 3. Проверка параметров URL Search (?uid=... или ?user_id=...)
-      if (!foundId && window.location.search) {
-        try {
-          const urlParams = new URLSearchParams(window.location.search);
-          foundId = urlParams.get('uid') || urlParams.get('userId') || urlParams.get('user_id') || urlParams.get('id') || urlParams.get('chat_id') || urlParams.get('start_param');
-          if (!foundName) {
-            foundName = urlParams.get('fio') || urlParams.get('name');
-          }
-        } catch (e) {}
-      }
+      // Источник В: Нативный мост МАКС WebView
+      if (!foundId) {
+        const bridge = window.WebApp || (window.Max && window.Max.WebApp) || (window.Telegram && window.Telegram.WebApp) || window.Max;
+        if (bridge) {
+          try {
+            if (typeof bridge.ready === 'function') bridge.ready();
+            if (typeof bridge.expand === 'function') bridge.expand();
+          } catch(e) {}
 
-      // 4. Проверка сохраненного ID в хранилище браузера устройства
-      if (!foundId || foundId === 'web_user') {
-        const saved = localStorage.getItem('USER_MAX_ID');
-        if (saved && saved !== 'web_user' && /^\d+$/.test(saved)) {
-          foundId = saved;
+          if (bridge.initDataUnsafe && bridge.initDataUnsafe.user) {
+            const bu = bridge.initDataUnsafe.user;
+            if (bu.id || bu.user_id) {
+              foundId = String(bu.id || bu.user_id);
+              foundName = ((bu.first_name || '') + ' ' + (bu.last_name || '')).trim();
+            }
+          }
+
+          if (!foundId && bridge.initData) {
+            try {
+              const dp = new URLSearchParams(bridge.initData);
+              if (dp.get('user')) {
+                const uObj = JSON.parse(decodeURIComponent(dp.get('user')));
+                if (uObj && (uObj.id || uObj.user_id)) {
+                  foundId = String(uObj.id || uObj.user_id);
+                  foundName = ((uObj.first_name || '') + ' ' + (uObj.last_name || '')).trim();
+                }
+              }
+            } catch(e) {}
+          }
         }
       }
 
-      // Применение и сохранение ID профиля
+      // Применение найденного профиля
       if (foundId && /^\d+$/.test(foundId)) {
         currentUserId = foundId;
-        localStorage.setItem('USER_MAX_ID', foundId);
         updateUserBadge(foundId);
       } else {
+        currentUserId = 'web_user';
         updateUserBadge(currentUserId);
       }
 
@@ -907,17 +895,17 @@
     }
 
     window.addEventListener('load', function() {
-      detectMaxUserId();
+      detectRealMaxUser();
 
-      // Циклическая проверка для перехвата моста, если он внедряется с задержкой в WebView
-      let attempts = 0;
-      const checker = setInterval(function() {
-        attempts++;
-        const id = detectMaxUserId();
-        if ((id && id !== 'web_user') || attempts > 25) {
-          clearInterval(checker);
+      // Ожидание инициализации моста в десктопном клиенте
+      let tries = 0;
+      const timer = setInterval(function() {
+        tries++;
+        const id = detectRealMaxUser();
+        if ((id && id !== 'web_user') || tries > 20) {
+          clearInterval(timer);
         }
-      }, 120);
+      }, 100);
 
       renderFaqs(faqs);
       renderSchools(schools);
@@ -1119,8 +1107,7 @@
         targetOrg = document.getElementById('schoolSelect').value;
       }
 
-      // Финальная сверка перед отправкой
-      detectMaxUserId();
+      detectRealMaxUser();
 
       const payload = {
         action: 'submit_mini_app_appeal',
@@ -1147,14 +1134,9 @@
         noticeBox.className = 'notification success';
         noticeBox.textContent = 'Обращение успешно зарегистрировано в едином реестре. Адресат: ' + targetOrg;
         document.getElementById('textInput').value = '';
-        if (res.userId && res.userId !== 'web_user') {
-          currentUserId = res.userId.replace(/^id_/, '');
-          localStorage.setItem('USER_MAX_ID', currentUserId);
-          updateUserBadge(currentUserId);
-        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       })
-      .catch(function(err) {
+      .catch(function() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Зарегистрировать обращение';
         noticeBox.className = 'notification error';
