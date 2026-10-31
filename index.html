@@ -726,8 +726,7 @@
           <button type="submit" id="submitBtn" class="btn-submit">
             <svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;" viewBox="0 0 24 24">
               <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             Зарегистрировать обращение
           </button>
         </form>
@@ -787,7 +786,7 @@
     let currentDest = 'komitet';
     let currentUserId = 'web_user';
 
-    // 1. Принудительное удаление устаревших данных из постоянной памяти браузера
+    // Принудительное удаление устаревших данных из локальной памяти браузера
     try {
       localStorage.removeItem('USER_MAX_ID');
       localStorage.removeItem('MAX_USER_ID');
@@ -805,12 +804,12 @@
       }
     }
 
-    // 2. Строгий поиск ID текущего пользователя без использования чужих сессий
+    // Строгий поиск ID текущего пользователя без использования чужих сессий
     function detectRealMaxUser() {
       let foundId = null;
       let foundName = null;
 
-      // Источник А: URL Search (?uid=... из кнопки в чате бота)
+      // 1. Проверка параметров URL Search (?uid=... из кнопки в чате бота)
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const u = urlParams.get('uid') || urlParams.get('userId') || urlParams.get('user_id') || urlParams.get('id');
@@ -820,7 +819,7 @@
         foundName = urlParams.get('fio') || urlParams.get('name');
       } catch(e) {}
 
-      // Источник Б: URL Hash (#maxWebAppData=... или #tgWebAppData=...)
+      // 2. Проверка URL Hash (#maxWebAppData=... или #tgWebAppData=...)
       if (!foundId && window.location.hash) {
         try {
           const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -843,7 +842,7 @@
         } catch(e) {}
       }
 
-      // Источник В: Нативный мост МАКС WebView
+      // 3. Проверка нативного моста МАКС WebView
       if (!foundId) {
         const bridge = window.WebApp || (window.Max && window.Max.WebApp) || (window.Telegram && window.Telegram.WebApp) || window.Max;
         if (bridge) {
